@@ -175,4 +175,62 @@
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
     </body>
+    <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-firestore.js"></script>
+  <script type="text/javascript">
+    (function() {
+      var firebaseConfig = {
+        apiKey: "AIzaSyAbQXk9MFIDNt2QvXdZ0QVnSAPnuPWhM98",
+        authDomain: "mqmachineworks-2b0e1.firebaseapp.com",
+        projectId: "mqmachineworks-2b0e1",
+        storageBucket: "mqmachineworks-2b0e1.appspot.com",
+        messagingSenderId: "284097356825",
+        appId: "1:284097356825:web:c444f7f6ea9dfc0143f688",
+        measurementId: "G-M662ZGX6D2"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+
+      var push_to_firebase = function(data){
+        // alert("Thanks for sending a message. I'll try and get back to you as soon as possible.")
+        var db = firebase.firestore();
+
+        db.collection("messages").add({
+            name: data["name"],
+            email: data["email"],
+            phone: data["phone"],
+            type: data["type"],
+            message: data["msg"],
+            timestamp: Date.now()
+        })
+        .then(function(docRef) {
+            console.log("Message sent, ID: ", docRef.id);
+            location.reload();
+        })
+        .catch(function(error) {
+            console.error("Message could not be sent: ", error);
+        });
+      }
+
+      var contact_submit = function(){
+        var name = document.getElementById("name");
+        var email = document.getElementById("email");
+        var phone = document.getElementById("phone");
+        var type = document.getElementById("workTypeSelect");
+        var msg = document.getElementById("message");
+
+        var data = {
+          "name": name.value,
+          "email": email.value,
+          "phone": phone.value,
+          "type": type.value,
+          "msg": msg.value
+        }
+        push_to_firebase(data);
+
+      }
+
+      document.getElementById("submitButton").addEventListener("click", contact_submit);
+    })();
+  </script>
 </html>
